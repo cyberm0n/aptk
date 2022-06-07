@@ -1,0 +1,220 @@
+#!/usr/bin/env python
+#encoding: utf-8
+
+#Author : ssd
+#Date   : 2018
+#Langue : Engilish
+                             
+#
+# 		 Permission is hereby granted, free of charge, to any person obtaining
+#		 a copy of this software and associated documentation files (the
+#		 "Software"), to deal in the Software without restriction, including
+#		 without limitation the rights to use, copy, modify, merge, publish,
+#		 distribute, sublicense, and/or sell copies of the Software, and to
+#		 permit persons to whom the Software is furnished to do so, subject to
+#		 the following conditions:
+
+#		 The above copyright notice and this permission notice shall be included
+#		 in all copies or substantial portions of the Software.
+
+#		 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+#		 EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#		 MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+#		 IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+#		 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+#		 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+#		 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+import os
+import sys
+import argparse
+import subprocess
+
+class bcolors:
+
+	BLUE = '\033[94m'
+	GREEN = '\033[92m'
+	RED = '\033[31m'
+	YELLOW = '\033[93m'
+	FAIL = '\033[91m'
+	ENDC = '\033[0m'
+	BOLD = '\033[1m'
+	BGRED = '\033[41m'
+	WHITE = '\033[37m'
+
+if __name__ != "__main__":
+	sys.exit()
+	
+if os.name != "posix":
+	print("Your system is not linux! Only linux.")
+	
+parser = argparse.ArgumentParser(description="Kali Hack tool installer software")
+parser.add_argument("-p","--packet",metavar="<packet name>",help="install packet on your kali system",default="-")
+parser.add_argument("-s","--setup",metavar="<department name>",help="setup hack department on your kali system",default="_")
+group = parser.add_mutually_exclusive_group()
+group.add_argument("-g","--generate",help="generate kali hack system on linux system",action='store_true')
+group.add_argument("-n","--network",help="restart your network system",action='store_true')
+group.add_argument("-u","--upgrade",help="update your system on linux system",action='store_true')
+group.add_argument("-a","--add",help="add repo image server and key on your linux",action='store_true')
+group.add_argument("-r","--repositories",help="change your repositories on linux",action='store_true')
+group.add_argument("-l","--log",help="change your repositories on linux",action='store_true')
+group.add_argument("-w","--writer",help="show writer contact adress and about",action='store_true')
+group.add_argument("-e","--explanation",help="show software explanation",action='store_true')
+args = parser.parse_args()
+
+try:
+	log_record_write = open("/var/log/aptk.log","a")
+	log_record_read = open("/var/log/aptk.log","r")
+except IOError:
+	print("Please Be Root. You are not Root!!")
+	sys.exit()
+
+if args.packet == "-" and args.setup == "_" and args.upgrade == False and args.generate == False and args.network == False and args.add == False and args.repositories == False and args.log == False and args.writer == False and args.explanation == False:
+	print(bcolors.BLUE+"GNU Aptk Kali Tool Installer"+bcolors.ENDC)
+	print("""Usage: aptk [options]
+
+Try `aptk --help' or `aptk -h ' for more options.""")
+if not args.packet == "-":
+	log_record_write.write("\n")
+	log_record_write.write(args.packet)
+	#subprocess.call(["apt","install",args.packet])
+	os.system("apt-get install " + args.packet)
+	log_record_write.write("\n")
+	log_record_write.write(args.packet)
+
+if args.upgrade != False:
+	#subprocess.call["apt","update","&&","apt-get","upgrade"]
+	os.system("apt update && apt-get upgrade")
+
+elif args.network != False:
+	service_name = "network-manager"
+	subprocess.call(["service",service_name,"restart"])
+	#os.system("service ",service_name," restart")
+
+elif not args.add == False:
+	server_key = "ED444FF07D8D0BF6"
+	server_name = "pool.sks-keyservers.net"
+	subprocess.call(["apt-key","adv","--keyserver",server_name,"--recv-keys",server_key])
+	#os.system("apt-key","adv","--keysever",server_name,"--recv-keys",server_key)   
+		
+elif not args.repositories == False:
+	repo_files = open("/etc/apt/sources.list","a")
+	repo_1 = "deb http://http.kali.org/kali kali-rolling main non-free contrib"
+	repo_2 = "deb http://http.kali.org/kali kali-last-snapshot main non-free contrib"
+	repo_3 = "deb http://http.kali.org/kali kali-experimental main non-free contrib"
+	repo_list = [repo_1,repo_2,repo_3]
+	repo_files.write("\n")
+	for i in repo_list:
+		repo_files.write(i)
+		repo_files.write("\n")
+
+elif not args.log == False:
+	print(bcolors.BLUE+"Your aptk software log records - aptk"+bcolors.ENDC)
+	print(log_record_read.read())
+	    
+elif not args.setup == "_":
+	log_record_write.write("\n")
+	log_record_write.write(args.setup) 
+	if args.setup == "all":
+		os.system("apt-get -f install acccheck ace-voip amap automater braa casefile cdpsnarf cisco-torch cookie-cadger copy-router-config dmitry dnmap dnsenum dnsmap dnsrecon dnstracer dnswalk dotdotpwn enum4linux enumiax exploitdb fierce firewalk fragroute fragrouter ghost-phisher golismero goofile lbd maltego-teeth masscan metagoofil miranda nmap p0f parsero recon-ng set smtp-user-enum snmpcheck sslcaudit sslsplit sslstrip sslyze thc-ipv6 theharvester tlssled twofi urlcrazy wireshark wol-e xplico ismtp intrace hping3 bbqsql bed cisco-auditing-tool cisco-global-exploiter cisco-ocs cisco-torch copy-router-config doona dotdotpwn greenbone-security-assistant hexorbase jsql lynis nmap ohrwurm openvas-cli openvas-manager openvas-scanner oscanner powerfuzzer sfuzz sidguesser siparmyknife sqlmap sqlninja sqlsus thc-ipv6 tnscmd10g unix-privesc-check yersinia aircrack-ng asleap bluelog blueranger bluesnarfer bully cowpatty crackle eapmd5pass fern-wifi-cracker ghost-phisher giskismet gqrx kalibrate-rtl killerbee kismet mdk3 mfcuk mfoc mfterm multimon-ng pixiewps reaver redfang spooftooph wifi-honey wifitap wifite apache-users arachni bbqsql blindelephant burpsuite cutycapt davtest deblaze dirb dirbuster fimap funkload grabber jboss-autopwn joomscan jsql maltego-teeth padbuster paros parsero plecost powerfuzzer proxystrike recon-ng skipfish sqlmap sqlninja sqlsus ua-tester uniscan vega w3af webscarab websploit wfuzz wpscan xsser zaproxy burpsuite dnschef fiked hamster-sidejack hexinject iaxflood inviteflood ismtp mitmproxy ohrwurm protos-sip rebind responder rtpbreak rtpinsertsound rtpmixsound sctpscan siparmyknife sipp sipvicious sniffjoke sslsplit sslstrip thc-ipv6 voiphopper webscarab wifi-honey wireshark xspy yersinia zaproxy cryptcat cymothoa dbd dns2tcp http-tunnel httptunnel intersect nishang polenum powersploit pwnat ridenum sbd u3-pwn webshells weevely casefile cutycapt dos2unix dradis keepnote magictree metagoofil nipper-ng pipal armitage backdoor-factory cisco-auditing-tool cisco-global-exploiter cisco-ocs cisco-torch crackle jboss-autopwn linux-exploit-suggester maltego-teeth set shellnoob sqlmap thc-ipv6 yersinia beef-xss binwalk bulk-extractor chntpw cuckoo dc3dd ddrescue dumpzilla extundelete foremost galleta guymager iphone-backup-analyzer p0f pdf-parser pdfid pdgmail peepdf volatility xplico dhcpig funkload iaxflood inviteflood ipv6-toolkit mdk3 reaver rtpflood slowhttptest t50 termineter thc-ipv6 thc-ssl-dos acccheck burpsuite cewl chntpw cisco-auditing-tool cmospwd creddump crunch findmyhash gpp-decrypt hash-identifier hexorbase john johnny keimpx maltego-teeth maskprocessor multiforcer ncrack oclgausscrack pack patator polenum rainbowcrack rcracki-mt rsmangler statsprocessor thc-pptp-bruter truecrack webscarab wordlists zaproxy apktool dex2jar python-distorm3 edb-debugger jad javasnoop jd ollydbg smali valgrind yara android-sdk apktool arduino dex2jar sakis3g smali && wget http://www.morningstarsecurity.com/downloads/bing-ip2hosts-0.4.tar.gz && tar -xzvf bing-ip2hosts-0.4.tar.gz && cp bing-ip2hosts-0.4/bing-ip2hosts /usr/local/bin/")
+
+	elif args.setup == "information-gathering":
+		os.system("apt-get install -y acccheck ace-voip amap automater braa casefile cdpsnarf cisco-torch cookie-cadger copy-router-config dmitry dnmap dnsenum dnsmap dnsrecon dnstracer dnswalk dotdotpwn enum4linux enumiax exploitdb fierce firewalk fragroute fragrouter ghost-phisher golismero goofile lbd maltego-teeth masscan metagoofil miranda nmap p0f parsero recon-ng set smtp-user-enum snmpcheck sslcaudit sslsplit sslstrip sslyze thc-ipv6 theharvester tlssled twofi urlcrazy wireshark wol-e xplico ismtp intrace hping3 && wget http://www.morningstarsecurity.com/downloads/bing-ip2hosts-0.4.tar.gz && tar -xzvf bing-ip2hosts-0.4.tar.gz && cp bing-ip2hosts-0.4/bing-ip2hosts /usr/local/bin/")
+		    
+		    
+	elif args.setup == "vulnerability-analysis":
+		os.system("apt-get install -y bbqsql bed cisco-auditing-tool cisco-global-exploiter cisco-ocs cisco-torch copy-router-config doona dotdotpwn greenbone-security-assistant hexorbase jsql lynis nmap ohrwurm openvas-cli openvas-manager openvas-scanner oscanner powerfuzzer sfuzz sidguesser siparmyknife sqlmap sqlninja sqlsus thc-ipv6 tnscmd10g unix-privesc-check yersinia")
+		    
+	elif args.setup == "wireless-attacks":
+		os.system("apt-get install -y aircrack-ng asleap bluelog blueranger bluesnarfer bully cowpatty crackle eapmd5pass fern-wifi-cracker ghost-phisher giskismet gqrx kalibrate-rtl killerbee kismet mdk3 mfcuk mfoc mfterm multimon-ng pixiewps reaver redfang spooftooph wifi-honey wifitap wifite")
+		    
+	elif args.setup == "web-applications":
+		os.system("apt-get install -y apache-users arachni bbqsql blindelephant burpsuite cutycapt davtest deblaze dirb dirbuster fimap funkload grabber jboss-autopwn joomscan jsql maltego-teeth padbuster paros parsero plecost powerfuzzer proxystrike recon-ng skipfish sqlmap sqlninja sqlsus ua-tester uniscan vega w3af webscarab websploit wfuzz wpscan xsser zaproxy")
+		    
+	elif args.setup == "sniffing-spoofing":
+		os.system("apt-get install -y burpsuite dnschef fiked hamster-sidejack hexinject iaxflood inviteflood ismtp mitmproxy ohrwurm protos-sip rebind responder rtpbreak rtpinsertsound rtpmixsound sctpscan siparmyknife sipp sipvicious sniffjoke sslsplit sslstrip thc-ipv6 voiphopper webscarab wifi-honey wireshark xspy yersinia zaproxy")
+	
+	
+	elif args.setup == "maintaining-access":
+		os.system("apt-get install -y cryptcat cymothoa dbd dns2tcp http-tunnel httptunnel intersect nishang polenum powersploit pwnat ridenum sbd u3-pwn webshells weevely")
+		    
+	elif args.setup == "reporting-tools":
+		os.system("apt-get install -y casefile cutycapt dos2unix dradis keepnote magictree metagoofil nipper-ng pipal")
+
+		    
+	elif args.setup == "exploitation-tools":
+		os.system("apt-get install -y armitage backdoor-factory cisco-auditing-tool cisco-global-exploiter cisco-ocs cisco-torch crackle jboss-autopwn linux-exploit-suggester maltego-teeth set shellnoob sqlmap thc-ipv6 yersinia beef-xss")
+		    
+		    
+	elif args.setup == "forensics-tools":
+		os.system("apt-get install -y binwalk bulk-extractor chntpw cuckoo dc3dd ddrescue dumpzilla extundelete foremost galleta guymager iphone-backup-analyzer p0f pdf-parser pdfid pdgmail peepdf volatility xplico")
+	elif args.setup == "stress-testing":
+		os.system("apt-get install -y dhcpig funkload iaxflood inviteflood ipv6-toolkit mdk3 reaver rtpflood slowhttptest t50 termineter thc-ipv6 thc-ssl-dos")
+	elif args.setup == "password-attacks":
+		os.system("apt-get install -y acccheck burpsuite cewl chntpw cisco-auditing-tool cmospwd creddump crunch findmyhash gpp-decrypt hash-identifier hexorbase john johnny keimpx maltego-teeth maskprocessor multiforcer ncrack oclgausscrack pack patator polenum rainbowcrack rcracki-mt rsmangler statsprocessor thc-pptp-bruter truecrack webscarab wordlists zaproxy")
+	elif args.setup == "reverse-engineering":
+		os.system("apt-get install -y apktool dex2jar python-diStorm3 edb-debugger jad javasnoop JD OllyDbg smali Valgrind YARA")
+	elif args.setup == "hardware-hacking":
+		os.system("apt-get install -y android-sdk apktool arduino dex2jar sakis3g smali")
+	elif args.setup == "extra":
+			os.system("apt-get install squid3")
+			os.system("git clone https://github.com/LionSec/wifresti.git && cp wifresti/wifresti.py /usr/bin/wifresti && chmod +x /usr/bin/wifresti && wifresti")
+	else:
+		print(bcolors.BLUE+"Setup Kali Linux Hack Department - aptk"+bcolors.ENDC)
+		print("""
+    - All                    = all                     
+    - Information Gathering  = information-gathering        
+    - Vulnerability Analysis = vulnerability-analydis      
+    - Wireless Attacks       = wireless-attacks            
+    - Web Applications       = web-applications            
+    - Sniffing & Spoofing    = sniffing-spoofing            
+    - Maintaining Access     = maintaining-access          
+    - Reporting Tools        = reporting-tools             
+    - Exploitation Tools     = exploitation-tools   
+    - Forensics Tools        = forensics-tools  
+    - Stress Testing         = stress-testing  
+    - Password Attacks       = password-attacks   
+    - Reverse Engineering    = reverse-engineering
+    - Hardware Hacking       = hardware-hacking
+    - Extra                  = extra
+	  	""")
+
+elif args.generate != False:
+	subprocess.call(["apt","update"])
+	#os.system("apt-get update")
+	repo_files = open("/etc/apt/sources.list","a")
+	repo_1 = "deb http://http.kali.org/kali kali-rolling main non-free contrib"
+	repo_2 = "deb http://http.kali.org/kali kali-last-snapshot main non-free contrib"
+	repo_3 = "deb http://http.kali.org/kali kali-experimental main non-free contrib"
+	repo_list = [repo_1,repo_2,repo_3]
+	repo_files.write("\n")
+	for i in repo_list:
+		repo_files.write(i)
+		repo_files.write("\n")
+	server_key = "ED444FF07D8D0BF6"
+	server_name = "pool.sks-keyservers.net"
+	subprocess.call(["apt-key","adv","--keysever",server_name,"--recv-keys",server_key])
+	#os.system("apt-key","adv","--keysever",server_name,"--recv-keys",server_key)
+	subprocess.call(["apt","update"])
+
+elif args.writer != False:
+	print(bcolors.BLUE+"About Writer And Contact Adress - Aptk"+bcolors.ENDC)
+	print("""
+I am real hacker. No hack operation is not imposibble.
+ssd is coder,hacker and more...
+
+email  = ssd8bit@outlook.com
+github = @ssdm0n
+	""")
+			
+elif args.explanation != False:
+	print(bcolors.BLUE+"About Software - Aptk"+bcolors.ENDC)
+	print("""
+Aptk is kali hack tool installer.
+aptk use on all linux system. (Xubuntu,Pardus,Lubuntu,Oracle,...)
+and old kali linux system. This software better than other software.
+Best Kali linux tool installer
+
+Thank for : kali.org
+Author    : ssd
+	""")
