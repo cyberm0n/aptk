@@ -200,11 +200,8 @@ elif args.generate != False:
 elif args.writer != False:
 	print(bcolors.BLUE+"About Writer And Contact Adress - Aptk"+bcolors.ENDC)
 	print("""
-I am real hacker. No hack operation is not imposibble.
-ssd is coder,hacker and more...
-
-email  = ssd8bit@outlook.com
-github = @ssdm0n
+Simple Person
+github = @cyberm0n
 	""")
 			
 elif args.explanation != False:
